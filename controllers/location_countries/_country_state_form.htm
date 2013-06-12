@@ -1,0 +1,37 @@
+<div id="state_form">
+	<h2>State</h2>
+	<div class="form-300">
+		<?=Phpr_Form::open_tag() ?>
+			<? if (!isset($fatal_error)): ?>
+				<input type="hidden" name="country_session_key" value="<?=h($session_key) ?>"/>
+				<input type="hidden" name="state_id" value="<?=$state_id ?>"/>
+
+				<div class="content">
+					<? $this->form_render($state) ?>
+
+				</div>
+				<div class="footer align-center">
+					<?=admin_ajax_button('Save', 'on_save_country_state', array('class'=>'btn-success'), "
+						loadIndicator: {injectInElement: true},
+						onSuccess: updateStates
+					") ?>
+					<?=admin_button('Cancel', array('onclick'=>'return cancelPopup()')) ?>
+				</div>
+
+				<script type="text/javascript">
+					jQuery('#state_form').bind('popupLoaded', function(){
+						jQuery('#Location_State_code').focus();
+					});
+				</script>
+
+			<? else: ?>
+				<div class="content">
+					<?=flash()?>
+				</div>
+				<div class="footer">
+					<?=admin_button('Cancel', array('onclick'=>'return cancelPopup()')) ?>
+				</div>
+			<? endif ?>
+		</form>
+	</div>
+</div>

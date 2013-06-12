@@ -1,0 +1,34 @@
+<div class="control-group">
+	<p>Define states for the country. If there are no states in the country, leave this list empty.</p>
+	
+	<div id="state_list" class="clear">
+		<? $this->display_partial('country_states_list') ?>
+	</div>
+
+	<p>
+		<a href="#" class="btn btn-icon" onclick="$('state_id').value = ''; new PopupForm('on_load_country_state_form', {ajaxFields: $('state_id').getForm()}); return false;">
+			<i class="icon-plus"></i>
+			Add state
+		</a>
+	</p>
+	<input type="hidden" name="state_id" id="state_id" value="" />
+
+	<script type="text/javascript">
+		function updateStates() {
+			cancelPopup();
+
+			$('state_list').getForm().sendPhpr(
+				'on_update_country_state_list',
+				{
+					update: 'state_list',
+					loadIndicator: {
+						show: true,
+						element: 'state_list',
+						hideOnSuccess: true,
+						src: 'framework/assets/images/loading_30.gif'
+					}
+				}
+			)
+		}
+	</script>
+</div>

@@ -1,0 +1,9 @@
+<? Admin_Breadcrumb::add('Settings', 'admin/settings')->add($this->app_page_title);?>
+<? Phpr_View::begin_block("head") ?>
+	<script type="text/javascript" src="modules/location/assets/scripts/js/countries.js"></script>
+<? Phpr_View::end_block() ?>
+<? Phpr_View::begin_block("view") ?>
+	<?=flash()?>
+
+	<?=$this->list_render(array('list_control_panel'=>'control_panel')) ?>
+<? Phpr_View::end_block() ?>

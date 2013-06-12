@@ -1,0 +1,94 @@
+<?php
+
+// For functional details see ../vendor/geocoder/README.md
+
+class Location_Geocode
+{
+	protected static $initialized = false;
+	protected static $adapter;
+	protected static $geocoder;
+
+	public static function init_geocode()
+	{
+		if (self::$initialized)
+		{
+			return;
+		}
+			
+		require_once(PATH_APP."/modules/location/vendor/geocoder/Autoloader.php");
+
+		self::$adapter  = new HttpAdapter_Curl();
+		self::$geocoder = new Geocoder();
+
+		//new \Geocoder\Provider\YahooProvider(
+		//    $adapter, '<YAHOO_API_KEY>', $locale
+		//);
+		//new \Geocoder\Provider\IpInfoDbProvider(
+		//    $adapter, '<IPINFODB_API_KEY>'
+		//);
+
+		self::$initialized = true;
+	}
+
+	public static function from_address($address=null)
+	{
+		self::init_geocode();
+		self::$geocoder->registerProvider(new Provider_GoogleMaps(self::$adapter));
+		$result = self::$geocoder->geocode($address);
+
+		Phpr::$events->fire_event('location:after_geocode_from_address', $result);
+
+		return $result;
+	}
+
+	public static function from_ip($ip=null)
+	{
+		if ($ip===null)
+		{
+			$ip = $_SERVER['REMOTE_ADDR'];
+		}
+
+		self::init_geocode();
+		self::$geocoder->registerProvider(new Provider_HostIp(self::$adapter));
+		return self::$geocoder->geocode($ip);
+	}
+
+	// Attempts to find an address from a string and apply it to an object
+	public static function address_to_object($model, $address_string)
+	{
+		$geocode = self::from_address($address_string);
+		if ($geocode->getZipcode() && $geocode->getCountryCode())
+		{
+			$model->street_addr = $geocode->getStreetNumber() . " " . $geocode->getStreetName();
+			$model->zip = $geocode->getZipcode();
+			$model->city = $geocode->getCity();
+
+			if ($state = Location_State::create()->find_by_name($geocode->getRegion()))
+				$model->state_id = $state->id;
+
+			if ($country = Location_Country::create()->find_by_code($geocode->getCountryCode()))
+				$model->country_id = $country->id;
+		}
+		return $model;
+	}
+
+	public static function address_to_array($array, $address_string)
+	{
+		$tmp_object = new stdClass();
+		$tmp_object = self::address_to_object($tmp_object, $address_string);
+		$tmp_array = (array)$tmp_object;
+		$array = array_merge($array, $tmp_array);
+		return $array;
+	}
+
+	public static function geocode_to_object($model, $address_string) 
+	{
+		$geo = self::from_address($address_string);
+		if ($geo->getLatitude() && $geo->getLongitude())
+		{
+			$model->latitude = $geo->getLatitude();
+			$model->longitude = $geo->getLongitude();
+		}
+		return $model;
+	}
+}
