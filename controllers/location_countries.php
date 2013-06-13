@@ -54,7 +54,6 @@ class Location_Countries extends Admin_Controller
 		$this->app_page_title = 'Countries';
 	}
 
-
 	protected function index_on_load_toggle_countries_form()
 	{
 		try

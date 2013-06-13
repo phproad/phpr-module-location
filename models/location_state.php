@@ -27,13 +27,18 @@ class Location_State extends Db_ActiveRecord
 
 	public function before_delete($id = null)
 	{
+		$this->check_in_use();
+	}
+	
+	public function check_in_use()
+	{
 		$bind = array('id'=>$this->id);
 		$in_use = Db_Helper::scalar('select count(*) from users where state_id=:id', $bind);
 		
 		if ($in_use)
 			throw new Phpr_ApplicationException("Cannot delete this state because it is in use by a user.");
 	}
-	
+
 	public static function find_by_id($id)
 	{
 		if (array_key_exists($id, self::$id_cache))

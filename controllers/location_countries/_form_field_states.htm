@@ -1,12 +1,12 @@
 <div class="control-group">
 	<p>Define states for the country. If there are no states in the country, leave this list empty.</p>
 	
-	<div id="state_list" class="clear">
+	<div id="state_list">
 		<? $this->display_partial('country_states_list') ?>
 	</div>
 
 	<p>
-		<a href="#" class="btn btn-icon" onclick="$('state_id').value = ''; new PopupForm('on_load_country_state_form', {ajaxFields: $('state_id').getForm()}); return false;">
+		<a href="javascript:;" class="btn btn-icon" onclick="$('#state_id').val(''); new PopupForm('on_load_country_state_form', { ajaxFields: $('#state_id').getForm() }); return false;">
 			<i class="icon-plus"></i>
 			Add state
 		</a>
@@ -17,18 +17,15 @@
 		function updateStates() {
 			cancelPopup();
 
-			$('state_list').getForm().sendPhpr(
-				'on_update_country_state_list',
-				{
-					update: 'state_list',
-					loadIndicator: {
-						show: true,
-						element: 'state_list',
-						hideOnSuccess: true,
-						src: 'framework/assets/images/loading_30.gif'
-					}
+			$('#state_list').phpr().post('on_update_country_state_list', {
+				update: '#state_list',
+				loadIndicator: {
+					show: true,
+					element: '#state_list',
+					hideOnSuccess: true,
+					src: 'framework/assets/images/loading_30.gif'
 				}
-			)
+			}).send();
 		}
 	</script>
 </div>

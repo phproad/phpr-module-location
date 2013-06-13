@@ -26,7 +26,7 @@ function enable_disable_selected() {
 	}
 	
 	new PopupForm('index_on_load_toggle_countries_form', {
-		ajaxFields: $('listLocation_Countries_index_list_body').getForm()
+		ajaxFields: $('#listLocation_Countries_index_list_body').getForm()
 	});
 
 	return false;
