@@ -23,12 +23,13 @@
 				</div>
 				<div class="footer align-center">
 
-					<?=admin_ajax_button('Apply', 'index_on_apply_countries_enabled_status', array(), "
+					<?=admin_ajax_button('Apply', 'index_on_apply_countries_enabled_status', array('class'=>'btn-success'), "
 						confirm: 'Are you sure?', 
-						loadIndicator: {injectInElement: true},
-						onSuccess: cancelPopup,
-						extraFields: $('listLocation_Countries_index_list_body').getForm(),
-						update: 'listLocation_Countries_index_list'") ?>
+						loadIndicator: { injectInElement: true },
+						success: cancelPopup,
+						data: $('#listLocation_Countries_index_list_body').getForm(),
+						update: '#listLocation_Countries_index_list'
+					") ?>
 
 					<?=admin_button('Cancel', array('onclick'=>'return cancelPopup()')) ?>
 				</div>
