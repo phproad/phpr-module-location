@@ -49,7 +49,7 @@ class Location_Geocode
 		}
 
 		self::init_geocode();
-		self::$geocoder->registerProvider(new Provider_HostIp(self::$adapter));
+		self::$geocoder->registerProvider(new Provider_FreeGeoIp(self::$adapter));
 		return self::$geocoder->geocode($ip);
 	}
 
