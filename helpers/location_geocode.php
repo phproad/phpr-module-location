@@ -69,6 +69,24 @@ class Location_Geocode
 			if ($country = Location_Country::create()->find_by_code($geocode->getCountryCode()))
 				$model->country_id = $country->id;
 		}
+
+		if ($geocode->getLatitude() && $geocode->getLongitude())
+		{
+			$model->latitude = $geocode->getLatitude();
+			$model->longitude = $geocode->getLongitude();
+		}
+
+		return $model;
+	}
+
+	public static function geocode_to_object($model, $address_string) 
+	{
+		$geocode = self::from_address($address_string);
+		if ($geocode->getLatitude() && $geocode->getLongitude())
+		{
+			$model->latitude = $geocode->getLatitude();
+			$model->longitude = $geocode->getLongitude();
+		}
 		return $model;
 	}
 
@@ -79,16 +97,5 @@ class Location_Geocode
 		$tmp_array = (array)$tmp_object;
 		$array = array_merge($array, $tmp_array);
 		return $array;
-	}
-
-	public static function geocode_to_object($model, $address_string) 
-	{
-		$geo = self::from_address($address_string);
-		if ($geo->getLatitude() && $geo->getLongitude())
-		{
-			$model->latitude = $geo->getLatitude();
-			$model->longitude = $geo->getLongitude();
-		}
-		return $model;
-	}
+	}	
 }
