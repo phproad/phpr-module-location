@@ -45,8 +45,8 @@ class Location_Countries extends Admin_Controller
 		$this->list_record_url = url('location/countries/edit');
 		$this->list_top_partial = 'country_selectors';
 
-		$this->list_custom_body_cells = PATH_SYSTEM.'/modules/db/behaviors/db_list_behavior/partials/_list_body_cb.htm';
-		$this->list_custom_head_cells = PATH_SYSTEM.'/modules/db/behaviors/db_list_behavior/partials/_list_head_cb.htm';
+		$this->list_custom_body_cells = PATH_SYSTEM.'/modules/db/behaviors/list_behavior/partials/_list_body_cb.htm';
+		$this->list_custom_head_cells = PATH_SYSTEM.'/modules/db/behaviors/list_behavior/partials/_list_head_cb.htm';
 	}
 
 	public function index()
