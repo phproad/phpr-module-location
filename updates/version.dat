@@ -3,4 +3,4 @@
 #3|1.0.3 Add map marker customisation
 #4|1.0.4 Improve country/state drop down handling
 #5|1.0.5 Fix to geolocation lookup from IP addresses
-#6|1.0.6 Fix minor bug handling namespaces
+#6|1.0.6 Add feature for searching areas by latitude/longitude radius
