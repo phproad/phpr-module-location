@@ -97,5 +97,29 @@ class Location_Geocode
 		$tmp_array = (array)$tmp_object;
 		$array = array_merge($array, $tmp_array);
 		return $array;
-	}	
+	}
+
+
+	/**
+	 * Returns all models within a circular radius of a given point (lat/lng)
+	 * $model - Db\ActiveRecord
+	 * $lat - Given point latitude
+	 * $lng - Given point longitude
+	 * $radius - search area radius
+	 * $type - unit of measurement for radius
+	 * Model must have columns 'latitude' and 'longitude'
+	 */
+	public static function apply_search_area($model, $lat, $lng, $radius=100, $type='mi')
+	{
+		// Maximum 1000, self imposed limit
+		if (!floatval($radius) || floatval($radius) > 1000)
+			$radius = 1000;
+
+		$unit = ($type == 'km') 
+			? 6371 // kms
+			: 3959; // miles
+
+		$model->where("( ".$unit." * acos( cos( radians(".$lat.") ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(".$lng.") ) + sin( radians(".$lat.") ) * sin( radians( latitude ) ) ) ) < ". $radius);
+		return $model;
+	}
 }
