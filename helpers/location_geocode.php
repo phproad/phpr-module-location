@@ -119,7 +119,14 @@ class Location_Geocode
 			? 6371 // kms
 			: 3959; // miles
 
-		$model->where("( ".$unit." * acos( cos( radians(".$lat.") ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(".$lng.") ) + sin( radians(".$lat.") ) * sin( radians( latitude ) ) ) ) < ". $radius);
+		$bind = array(
+			'unit' => $unit,
+			'lat' => $lat,
+			'lng' => $lng,
+			'radius' => $radius
+		);
+
+		$model->where("( :unit * acos( cos( radians( :lat ) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians( :lng ) ) + sin( radians( :lat ) ) * sin( radians( latitude ) ) ) ) < :radius", $bind);
 		return $model;
 	}
 }
