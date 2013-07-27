@@ -22,6 +22,7 @@ class Location_Geocode
 
 	public static function from_address($address=null)
 	{
+		self::init_geocode();
 
 		// Determine default address lookup provider
 		$config = Location_Config::create();
@@ -31,7 +32,6 @@ class Location_Geocode
 
 		$provider = new $address_provider_class_name(self::$adapter);
 
-		self::init_geocode();
 		self::$geocoder->registerProvider($provider);
 		$result = self::$geocoder->geocode($address);
 
@@ -42,6 +42,8 @@ class Location_Geocode
 
 	public static function from_ip($ip=null)
 	{
+		self::init_geocode();
+		
 		if ($ip===null)
 			$ip = $_SERVER['REMOTE_ADDR'];
 
@@ -53,7 +55,6 @@ class Location_Geocode
 
 		$provider = new $ip_provider_class_name(self::$adapter);
 
-		self::init_geocode();
 		self::$geocoder->registerProvider($provider);
 		return self::$geocoder->geocode($ip);
 	}
