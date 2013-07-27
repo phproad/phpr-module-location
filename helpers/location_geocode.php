@@ -11,22 +11,12 @@ class Location_Geocode
 	public static function init_geocode()
 	{
 		if (self::$initialized)
-		{
 			return;
-		}
 			
 		require_once(PATH_APP."/modules/location/vendor/geocoder/Autoloader.php");
 
 		self::$adapter  = new HttpAdapter_Curl();
 		self::$geocoder = new Geocoder();
-
-		//new \Geocoder\Provider\YahooProvider(
-		//    $adapter, '<YAHOO_API_KEY>', $locale
-		//);
-		//new \Geocoder\Provider\IpInfoDbProvider(
-		//    $adapter, '<IPINFODB_API_KEY>'
-		//);
-
 		self::$initialized = true;
 	}
 
@@ -53,11 +43,9 @@ class Location_Geocode
 	public static function from_ip($ip=null)
 	{
 		if ($ip===null)
-		{
 			$ip = $_SERVER['REMOTE_ADDR'];
-		}
- 
- 		// Determine default IP lookup provider
+
+		// Determine default IP lookup provider
 		$config = Location_Config::create();
 		$ip_provider_class_name = ($config->ip_lookup_provider) 
 			? $config->ip_lookup_provider
@@ -115,7 +103,6 @@ class Location_Geocode
 		$array = array_merge($array, $tmp_array);
 		return $array;
 	}
-
 
 	/**
 	 * Returns all models within a circular radius of a given point (lat/lng)
