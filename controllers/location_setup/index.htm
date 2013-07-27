@@ -3,7 +3,7 @@
 <? Phpr_View::begin_block("view") ?>	
 	<?=flash()?>
 	<? if (!isset($fatal_error)): ?>
-		<div class="form-400">
+		<div class="form-600">
 			<?=form_open(array('id'=>'settings_form'))?>
 				<? $this->form_render($form_model) ?>
 
