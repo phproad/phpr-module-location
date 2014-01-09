@@ -1,0 +1,24 @@
+<? Admin_Breadcrumb::add('Settings', 'admin/settings')->add('Currencies', 'location/currencies')->add($this->app_page_title);?>
+<? Phpr_View::begin_block("view") ?>
+	<?=flash()?>
+
+	<? if (!isset($fatal_error)): ?>
+		<div class="form-400">
+			<?=Phpr_Form::open_tag() ?>
+
+				<? $this->form_render() ?>
+
+				<div id="fixed-toolbar" class="top">
+					<div class="form-toolbar">
+						<?=admin_ajax_button('Create', 'create_on_save', array('class'=>'btn-success')) ?>
+						<?=admin_ajax_button('Cancel', 'create_on_cancel') ?>
+						<div class="clear"></div>
+					</div>
+				</div>
+
+			</form>
+		</div>
+	<? else: ?>
+		<p><a href="<?= url('location/currencies') ?>">Return to the currency list</a></p>
+	<? endif ?>
+<? Phpr_View::end_block() ?>
