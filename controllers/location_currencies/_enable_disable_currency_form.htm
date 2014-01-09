@@ -1,0 +1,46 @@
+<div id="enable_currencies_form">
+	<h2>Enable or Disable Currency</h2>
+	<?=Phpr_Form::open_tag() ?>
+		<div class="form-400">
+			<? if (!isset($fatal_error)): ?>
+				<div class="content">
+					<p>Currencies selected: <?=$currency_count ?></p>
+					
+					<div class="form">
+						<fieldset class="form-elements">
+							<div class="control-group field checkbox full">
+								<label for="Location_Currency_enabled" class="control-label"> Enabled </label>
+								<span class="help-block">Disabled currencies are not shown on the site.</span>
+
+								<div class="controls">
+									<input type="hidden" class="checkbox" value="" name="enabled">
+									<input type="checkbox" class="checkbox" value="1" name="enabled" id="Location_Currency_enabled">
+								</div>
+							</div>
+						</fieldset>
+					</div>
+
+				</div>
+				<div class="footer align-center">
+
+					<?=admin_ajax_button('Apply', 'index_on_apply_currencies_enabled_status', array('class'=>'btn-success'), "
+						confirm: 'Are you sure?', 
+						loadIndicator: { injectInElement: true },
+						success: cancelPopup,
+						data: $('#listLocation_Currencies_index_list_body').getForm(),
+						update: '#listLocation_Currencies_index_list'
+					") ?>
+
+					<?=admin_button('Cancel', array('onclick'=>'return cancelPopup()')) ?>
+				</div>
+			<? else: ?>
+				<div class="content">
+					<?=flash()?>
+				</div>
+				<div class="footer align-center">
+					<?=admin_button('Cancel', array('onclick'=>'return cancelPopup()')) ?>
+				</div>
+			<? endif ?>
+		</div>
+	</form>
+</div>
