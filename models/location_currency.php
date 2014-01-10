@@ -28,11 +28,15 @@ class Location_Currency extends Db_ActiveRecord
 		$this->add_form_field('enabled')->tab('Currency')->comment('Disabled currencies are not displayed anywhere.', 'above');
 
 	}
-	
-	public function before_delete($id = null)
+
+    public function before_delete($id = null)
     {
-		//@Todo
-	}
+        $bind = array('id'=>$this->id);
+        $in_use = Db_Helper::scalar('select count(*) from location_countries where currency_id=:id', $bind);
+
+        if ($in_use)
+            throw new Phpr_ApplicationException("Cannot delete currency because it has been assigned to a country as default currency.");
+    }
 	
 	public static function get_list($currency_id = null)
 	{
