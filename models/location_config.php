@@ -22,12 +22,12 @@ class Location_Config extends Core_Settings_Base
 		$this->define_multi_relation_column('map_marker', 'map_marker', 'Map Marker', '@name')->invisible();
 		$this->add_form_field('map_marker', 'left')->display_as(frm_file_attachments)
 			->display_files_as('single_image')
-			->add_document_label('Upload map marker')            
-			->no_attachments_label('Marker is not uploaded')
-			->image_thumb_size(50)
-			->no_label()            
-			->tab('Maps')
-			->comment('Recommended image dimensions 68px height by 42px width');
+            ->add_document_label('Upload map marker')
+            ->no_attachments_label('Marker is not uploaded')
+            ->image_thumb_size(50)
+            ->no_label()
+            ->tab('Maps')
+            ->comment('Recommended image dimensions 68px height by 42px width');
 	}
 
 	protected function init_config_data()

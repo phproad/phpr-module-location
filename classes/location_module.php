@@ -18,6 +18,6 @@ class Location_Module extends Core_Module_Base
 		$settings->add('/location/setup', 'Location Settings', 'Location related settings', '/modules/location/assets/images/location_config.png', 76);
 		$settings->add('/location/countries', 'Countries', 'Set up available locations', '/modules/location/assets/images/country_config.png', 77);
         $settings->add('/location/currencies', 'Currencies', 'Set up available currencies', '/modules/location/assets/images/currency_config.png', 78);
-        }
+    }
 
 }
