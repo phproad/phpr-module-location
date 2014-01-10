@@ -88,5 +88,18 @@ class Location_Config extends Core_Settings_Base
 			return null;
     }
 
+    public function get_address_lookup_provider_options($key_value = -1)
+    {
+        return array(
+            'Provider_GoogleMaps' => 'Google Maps',
+        );
+    }
 
+    public function get_ip_lookup_provider_options($key_value = -1)
+    {
+        return array(
+            'Provider_FreeGeoIp' => 'freegeoip.net',
+            'Provider_HostIp' => 'hostip.info',
+        );
+    }
 }
