@@ -1,4 +1,4 @@
 phpr-module-location
 ====================
 
-[PHPR Module] Reigonal functionality
+[PHPR Module] Regional functionality
