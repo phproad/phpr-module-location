@@ -28,15 +28,24 @@ class Location_Config extends Core_Settings_Base
             ->no_label()
             ->tab('Maps')
             ->comment('Recommended image dimensions 68px height by 42px width');
-	}
 
-	protected function init_config_data()
+
+        $this->add_field('address_lookup_provider', 'Address Lookup', 'left', db_number)->display_as(frm_dropdown)->tab('Providers');
+        $this->add_field('ip_lookup_provider', 'IP Lookup', 'right', db_number)->display_as(frm_dropdown)->tab('Providers');
+
+
+    }
+
+    protected function init_config_data()
 	{
 		$this->default_country = 1;
 		$this->default_state = 1;
         $this->default_currency = 1;
 		$this->default_unit = 'mi';
-	}
+
+        $this->address_lookup_provider = 'Provider_GoogleMaps';
+        $this->ip_lookup_provider = 'Provider_FreeGeoIp';
+    }
 
 	public function get_default_state_options($key_value = -1)
 	{
@@ -77,5 +86,7 @@ class Location_Config extends Core_Settings_Base
 			return root_url($settings->map_marker->first()->get_path());
 		else
 			return null;
-	}    
+    }
+
+
 }
