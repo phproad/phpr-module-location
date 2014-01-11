@@ -88,7 +88,7 @@ class Location_CurrencyConvert
 
     /* Add rate provider methods below.
      * Only accept Location_Currency objects
-     * Throws application error if cannot return a valid rate.
+     * Throw notification if cannot return a valid rate.
      */
 
     public static function GetRate_YahooYQL(Location_Currency $from_currency, Location_Currency $to_currency){
@@ -99,7 +99,6 @@ class Location_CurrencyConvert
         $yql_query = 'select * from yahoo.finance.xchange where pair="'.$from_currency->alpha_code.$to_currency->alpha_code.'"';
         $yql_query_url = $BASE_URL . "?q=" . urlencode($yql_query) . "&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
 
-        // @Todo Update this to make use of PHPR request/service methods.
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $yql_query_url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -112,7 +111,7 @@ class Location_CurrencyConvert
         }
 
         if(!is_numeric($rate) || $rate == 0){
-            throw new Phpr_ApplicationException($yql_query_url.' Could Not Retrieve Rate '.$from_currency->alpha_code.$to_currency->alpha_code.' from Yahoo YQL '.$rate);
+            throw new Phpr_ApplicationException('Could Not Retrieve Rate '.$from_currency->alpha_code.$to_currency->alpha_code.' from Yahoo YQL ');
         }
 
         return $rate;
