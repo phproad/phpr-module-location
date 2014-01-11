@@ -9,6 +9,7 @@ class Location_Currency extends Db_ActiveRecord
 	protected static $object_list = null;
 	protected static $name_list = null;
 	protected static $id_cache = array();
+    protected static $alpha_code_cache = array();
 
 	public $has_many = array();
 
@@ -105,5 +106,13 @@ class Location_Currency extends Db_ActiveRecord
 
 		return null;
 	}
+
+    public static function find_by_currency_code($code)
+    {
+        if (array_key_exists($code, self::$alpha_code_cache))
+            return self::$alpha_code_cache[$code];
+
+        return self::$alpha_code_cache[$code] = self::create(true)->find_by_alpha_code($code);
+    }
 
 }
