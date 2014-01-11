@@ -35,7 +35,6 @@ class Location_CurrencyConvert
             VALUES (:ident,:rate, NOW())
             ON DUPLICATE KEY UPDATE rate=:rate, cached_date=DATE(NOW())";
 
-        echo "Set cache rate ";
         $query = Db_Helper::query($sql, array('ident' => $ident,'rate' => $rate));
         return self::$rate_cache[$ident] = $rate;
     }
@@ -45,7 +44,7 @@ class Location_CurrencyConvert
             return self::$rate_cache[$ident];
 
         $rate = Db_Helper::scalar('select rate from location_currency_rates where ident=:ident AND cached_date=DATE(NOW())', array('ident' => $ident));
-        echo "cached rate $rate";
+
         if($rate){
             return $rate;
         }
@@ -85,6 +84,9 @@ class Location_CurrencyConvert
 
         return self::between_currencies($amount, $from_country->currency, $to_country->currency);
     }
+
+
+
 
     /* Add rate provider methods below.
      * Only accept Location_Currency objects
