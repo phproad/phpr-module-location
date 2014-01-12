@@ -32,7 +32,7 @@ class Location_Config extends Core_Settings_Base
 
         $this->add_field('address_lookup_provider', 'Address Lookup', 'left', db_number)->display_as(frm_dropdown)->tab('Providers');
         $this->add_field('ip_lookup_provider', 'IP Lookup', 'right', db_number)->display_as(frm_dropdown)->tab('Providers');
-
+        $this->add_field('currency_lookup_provider', 'Currency Rates Lookup', 'left', db_number)->display_as(frm_dropdown)->tab('Providers');
 
     }
 
@@ -45,6 +45,7 @@ class Location_Config extends Core_Settings_Base
 
         $this->address_lookup_provider = 'Provider_GoogleMaps';
         $this->ip_lookup_provider = 'Provider_FreeGeoIp';
+        $this->currency_lookup_provider = 'GetRate_YahooYQL';
     }
 
 	public function get_default_state_options($key_value = -1)
@@ -100,6 +101,13 @@ class Location_Config extends Core_Settings_Base
         return array(
             'Provider_FreeGeoIp' => 'freegeoip.net',
             'Provider_HostIp' => 'hostip.info',
+        );
+    }
+
+    public function get_currency_lookup_provider_options($key_value = -1)
+    {
+        return array(
+            'GetRate_YahooYQL' => 'Yahoo YQL',
         );
     }
 }
