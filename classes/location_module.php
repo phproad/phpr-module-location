@@ -7,7 +7,7 @@ class Location_Module extends Core_Module_Base
 	{
 		return new Core_Module_Detail(
 			"Location",
-			"Reigonal module",
+			"Regional module",
 			"PHPRoad",
 			"http://phproad.com/"
 		);
