@@ -2,30 +2,26 @@
 /* Currency Conversion
  *
  * Example Usage:
+ *
+ *      $currency_converter = new Location_CurrencyConvert;
  *      $from_currency = Location_Currency::create()->find_by_alpha_code(AUD);
  *      $to_currency = Location_Currency::create()->find_by_alpha_code(USD);
- *      $conversion = Location_CurrencyConvert::between_currencies(200, $from_currency,  $to_currency);
- *      echo "200 AUD in USD = $conversion";
+ *
+ *      echo "200 AUD in USD = ."$currency_converter->between_currencies(200, $from_currency,  $to_currency);
  */
 
 class Location_CurrencyConvert
 {
-    protected static $initialized = false;
-    protected static $getrate_method;
-    protected static $rate_cache = array();
 
-    protected function init_converter()
-    {
-        if (self::$initialized)
-            return;
+    protected $getrate_method;
+    protected $rate_cache = array();
 
+    function __construct(){
         // Determine default currency lookup provider
         $config = Location_Config::create();
-        self::$getrate_method  = ($config->currency_lookup_provider)
+        $this->getrate_method  = ($config->currency_lookup_provider)
             ? $config->currency_lookup_provider
             : 'GetRate_YahooYQL';
-
-        self::$initialized = true;
     }
 
     //rates are cached in db daily.
@@ -36,43 +32,42 @@ class Location_CurrencyConvert
             ON DUPLICATE KEY UPDATE rate=:rate, cached_date=DATE(NOW())";
 
         $query = Db_Helper::query($sql, array('ident' => $ident,'rate' => $rate));
-        return self::$rate_cache[$ident] = $rate;
+        return $this->rate_cache[$ident] = $rate;
     }
 
     protected function get_cached_rate($ident){
-        if (array_key_exists($ident, self::$rate_cache))
-            return self::$rate_cache[$ident];
+        if (array_key_exists($ident, $this->rate_cache)){
+            return $this->rate_cache[$ident];
+        }
 
         $rate = Db_Helper::scalar('select rate from location_currency_rates where ident=:ident AND cached_date=DATE(NOW())', array('ident' => $ident));
 
         if($rate){
-            return $rate;
+            return $this->rate_cache[$ident] = $rate;
         }
 
         return false;
     }
 
 
-    public static function between_currencies($amount,Location_Currency $from_currency, Location_Currency $to_currency)
+    public function between_currencies($amount,Location_Currency $from_currency, Location_Currency $to_currency)
     {
-        self::init_converter();
 
         if(!is_numeric($amount)){
             throw new Phpr_ApplicationException("Invalid amount given. Must be numeric value");
         }
 
         $ident = $from_currency->alpha_code.$to_currency->alpha_code;
-        $rate = self::get_cached_rate($ident);
+        $rate = $this->get_cached_rate($ident);
 
         if(!$rate){
-            $getrate_method = self::$getrate_method;
-            $rate = self::set_cached_rate($ident ,self::$getrate_method($from_currency, $to_currency));
+            $rate = $this->set_cached_rate($ident ,self::$this->getrate_method($from_currency, $to_currency));
         }
 
         return $amount * $rate;
     }
 
-    public static function between_countries($amount, Location_Country $from_country, Location_Country $to_country)
+    public function between_countries($amount, Location_Country $from_country, Location_Country $to_country)
     {
         if(!is_numeric($amount)){
             throw new Phpr_ApplicationException("Invalid amount given. Must be numeric value");
@@ -82,7 +77,7 @@ class Location_CurrencyConvert
             throw new Phpr_ApplicationException("Cannot find default currencies for both countries");
         }
 
-        return self::between_currencies($amount, $from_country->currency, $to_country->currency);
+        return $this->between_currencies($amount, $from_country->currency, $to_country->currency);
     }
 
 
