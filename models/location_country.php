@@ -113,12 +113,16 @@ class Location_Country extends Db_ActiveRecord
 
     public static function get_default_country_id()
     {
-        $countries = Location_Country::get_name_list();
-        if (is_array($countries))
-            return key($countries);
-
-        return null;
+        $config = Location_Config::create();
+        return $config->default_country;
     }
+
+    public static function get_default_country()
+    {
+        return self::create()->find(self::get_default_country_id());
+    }
+
+
 
     public function get_currency_options($key_value = -1)
     {

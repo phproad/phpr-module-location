@@ -99,13 +99,16 @@ class Location_Currency extends Db_ActiveRecord
 	}
 
 	public static function get_default_currency_id()
-	{
-		$currencies = Location_Currency::get_name_list();
-		if (is_array($currencies))
-			return key($currencies);
+    {
+    $config = Location_Config::create();
+    return $config->default_currency;
+    }
 
-		return null;
-	}
+    public static function get_default_currency()
+    {
+    return self::create()->find(self::get_default_currency_id());
+    }
+
 
     public static function find_by_currency_code($code)
     {
