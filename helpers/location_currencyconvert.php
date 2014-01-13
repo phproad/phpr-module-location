@@ -57,11 +57,16 @@ class Location_CurrencyConvert
             throw new Phpr_ApplicationException("Invalid amount given. Must be numeric value");
         }
 
+        if($from_currency->alpha_code == $to_currency->alpha_code){
+         return $amount;
+        }
+
         $ident = $from_currency->alpha_code.$to_currency->alpha_code;
         $rate = $this->get_cached_rate($ident);
+        $getrate_method = $this->getrate_method;
 
         if(!$rate){
-            $rate = $this->set_cached_rate($ident ,self::$this->getrate_method($from_currency, $to_currency));
+            $rate = $this->set_cached_rate($ident ,self::$getrate_method($from_currency, $to_currency));
         }
 
         return $amount * $rate;
