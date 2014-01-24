@@ -7,3 +7,4 @@
 #7|1.0.7 Add currencies
 #8|1.0.8 Add currency converter helper
 #9|1.0.9 Fixed currency converter bug, typos, get default currency and country methods
+#10|1.0.10 Fixes minor bug in database structure
